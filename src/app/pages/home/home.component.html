@@ -2,9 +2,9 @@
 <hr />
 <p>{{ (olympics$ | async)?.length }} data loaded</p>
 
-
 <div style="display: block">
   <canvas baseChart
+    [labels]="countries$ | async"
     [data]="pieChartData"
     [type]="pieChartType"
     [options]="pieChartOptions">
