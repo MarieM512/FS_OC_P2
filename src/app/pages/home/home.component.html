@@ -4,7 +4,7 @@
 
 <div style="display: block">
   <canvas baseChart
-    [labels]="countries$ | async"
+    [labels]="(countries$ | async) ?? []"
     [data]="pieChartData"
     [type]="pieChartType"
     [options]="pieChartOptions">
