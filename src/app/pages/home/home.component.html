@@ -1,6 +1,16 @@
 <h2>Olympic games app</h2>
 <hr />
-<p>{{ (olympics$ | async)?.length }} data loaded</p>
+
+<p class="title">Medals per Country</p>
+
+<div>
+  <p>
+    Number of JOs {{ (joNumber$ | async)?.length }}
+    Number of countries {{ (olympics$ | async)?.length }}
+  </p>
+</div>
+
+
 
 <div style="display: block">
   <canvas baseChart

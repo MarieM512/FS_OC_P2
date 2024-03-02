@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit {
   public olympics$: Observable<Olympic[]> = of([])
   public countries$!: Observable<string[]>
   public medalsNumber: number[] = []
+  public joNumber$!: Observable<number[]>
 
   public pieChartOptions: ChartConfiguration['options'] = {
     responsive: true,
@@ -28,6 +29,8 @@ export class HomeComponent implements OnInit {
     )
 
     this.olympics$.subscribe(item => {
+
+      // Countries
       let countries: string[] = []
       item.forEach(value => {
         countries.push(value.country)
@@ -35,6 +38,7 @@ export class HomeComponent implements OnInit {
       this.countries$ = of(countries)
       this.pieChartData.labels = countries
 
+      // Medals
       item.forEach(value => {
         let medals = 0
         value.participations.forEach(participation => {
@@ -45,6 +49,17 @@ export class HomeComponent implements OnInit {
       this.pieChartData.datasets.forEach(value => {
         value.data = this.medalsNumber
       })
+
+      // JO
+      let joNumber: number[] = []
+      item.forEach(value => {
+        value.participations.forEach(value => {
+          if (!joNumber.includes(value.year)) {
+            joNumber.push(value.year)
+          }
+        })
+      })
+      this.joNumber$ = of(joNumber)
     })
   }
 
