@@ -17,6 +17,9 @@ export class HomeComponent implements OnInit {
 
   public pieChartOptions: ChartConfiguration['options'] = {
     responsive: true,
+    plugins: { legend: { 
+      position: "bottom"
+    }}
   };
   public pieChartType: ChartType = 'pie';
 
@@ -71,4 +74,6 @@ export class HomeComponent implements OnInit {
       hoverBackgroundColor: ['darkred', 'darkorange', 'darkyellow', 'darkgreen', 'darkbrown']
     }]
   };
+
+
 }

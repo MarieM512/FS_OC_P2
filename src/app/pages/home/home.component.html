@@ -1,18 +1,16 @@
 <h2>Olympic games app</h2>
 <hr />
 
-<p class="title">Medals per Country</p>
+<div class="title">Medals per Country</div>
 
-<div>
-  <p>
-    Number of JOs {{ (joNumber$ | async)?.length }}
-    Number of countries {{ (olympics$ | async)?.length }}
-  </p>
+<div class="info">
+  <div class="item">Number of JOs<br> <strong>{{ (joNumber$ | async)?.length }}</strong></div>
+  <div class="item">Number of countries<br> <strong>{{ (olympics$ | async)?.length }}</strong></div>
 </div>
 
 
 
-<div style="display: block">
+<div class="pie-chart" style="display: block">
   <canvas baseChart
     [labels]="(countries$ | async) ?? []"
     [data]="pieChartData"
