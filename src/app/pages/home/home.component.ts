@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ChartConfiguration, ChartType } from 'chart.js';
 import { Observable, map, of } from 'rxjs';
 import { Olympic } from 'src/app/core/models/Olympic';
@@ -18,12 +19,12 @@ export class HomeComponent implements OnInit {
   public pieChartOptions: ChartConfiguration['options'] = {
     responsive: true,
     plugins: { legend: { 
-      position: "bottom"
+      position: "left"
     }}
   };
   public pieChartType: ChartType = 'pie';
 
-  constructor(private olympicService: OlympicService) {}
+  constructor(private olympicService: OlympicService, private router: Router) {}
 
   ngOnInit(): void {
     this.olympics$ = this.olympicService.getOlympics();
@@ -75,5 +76,8 @@ export class HomeComponent implements OnInit {
     }]
   };
 
-
+  public chartClicked(e: any) {
+    const index = e.active[0].index + 1
+    this.router.navigateByUrl("country/" + index)
+  }
 }

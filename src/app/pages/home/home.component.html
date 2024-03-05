@@ -15,6 +15,7 @@
     [labels]="(countries$ | async) ?? []"
     [data]="pieChartData"
     [type]="pieChartType"
-    [options]="pieChartOptions">
+    [options]="pieChartOptions"
+    (chartClick)="chartClicked($event)">
   </canvas>
 </div>
