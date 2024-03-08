@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ChartConfiguration, ChartType } from 'chart.js';
+import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { Observable, map, of } from 'rxjs';
 import { Olympic } from 'src/app/core/models/Olympic';
 import { OlympicService } from 'src/app/core/services/olympic.service';
@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
   pieChartOptions: ChartConfiguration['options'] = {
     responsive: true,
     plugins: { legend: { 
-      position: "left"
+      position: "top"
     }}
   };
   pieChartType: ChartType = 'pie';
