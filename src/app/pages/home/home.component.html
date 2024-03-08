@@ -6,11 +6,23 @@
 </div>
 
 <div class="pie-chart" style="display: block">
-  <canvas baseChart
-    [labels]="(countries$ | async) ?? []"
-    [data]="pieChartData"
-    [type]="pieChartType"
-    [options]="pieChartOptions"
-    (chartClick)="chartClicked($event)">
-  </canvas>
+  <ngx-charts-pie-chart
+    [results]="pieChartData$ | async"
+    [gradient]="gradient"
+    [legend]="showLegend"
+    [labels]="showLabels"
+    [trimLabels]="maxLabelLenght"
+    (select)="chartClicked($event)"
+
+    
+  >
+  <ng-template #tooltipTemplate let-model="model">
+    <div class="tooltip">{{ model.name }}
+    <br>
+    🏅 {{ model.value }}
+  </div>
+  </ng-template>   
+</ngx-charts-pie-chart>
 </div>
+
+

@@ -5,6 +5,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { Olympic } from '../models/Olympic';
 import { map } from 'rxjs';
 import { LineChartData } from '../models/LineChartData';
+import { PieChartData } from '../models/PieChartData';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +31,17 @@ export class OlympicService {
 
   getOlympics() {
     return this.olympics$.asObservable();
+  }
+
+  getIdByName(countryName: string): number {
+    let number: number = 0
+    this.olympics$.forEach(olympics => {
+      let olympic = olympics.find(olympic => olympic.country === countryName)
+      if (olympic) {
+        number = olympic.id
+      }
+    })
+    return number
   }
 
   getOlympicById(olympicId: number): Observable<Olympic> {
@@ -88,7 +100,7 @@ export class OlympicService {
     return years
   }
 
-  getMedalsList(olympic: Observable<Olympic>): number[] {
+  private getMedalsList(olympic: Observable<Olympic>): number[] {
     let medals: number[] = []
     olympic.forEach(item => {
       item.participations.forEach(data => {
@@ -107,17 +119,20 @@ export class OlympicService {
     return list
   }
 
-  getPieChartData(): number[] {
-    let list: number[] = []
-    this.olympics$.forEach(olympics => {
-      olympics.forEach(olympic => {
-        let medals = 0
-        olympic.participations.forEach(item => {
-          medals += item.medalsCount
+  getPieChartData(): Observable<PieChartData[]> {
+    return this.olympics$.pipe(
+      map(olympics => 
+        olympics.map(olympic => {
+          return {
+            name: olympic.country,
+            value: olympic.participations.reduce(
+              (previousValue, currentValue) => {
+                return previousValue + currentValue.medalsCount
+              }, 0
+            )
+          }
         })
-        list.push(medals)
-      })
-    })
-    return list
+      )
+    )
   }
 }

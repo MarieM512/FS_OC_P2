@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
-import { Observable, map, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Olympic } from 'src/app/core/models/Olympic';
+import { PieChartData } from 'src/app/core/models/PieChartData';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 
 @Component({
@@ -12,41 +12,23 @@ import { OlympicService } from 'src/app/core/services/olympic.service';
 })
 export class HomeComponent implements OnInit {
   public olympics$!: Observable<Olympic[]>
-  countries$!: Observable<string[]>
   joNumber$!: Observable<number[]>
-  pieChartOptions: ChartConfiguration['options'] = {
-    responsive: true,
-    plugins: { legend: { 
-      position: "top"
-    }}
-  };
-  pieChartType: ChartType = 'pie';
-  pieChartData = {
-    labels: ["One", "Two", "Three", "Four", "Five"],
-    datasets: [{
-      data: [1, 2, 3, 4, 5]
-    }]
-  };
+  pieChartData$! : Observable<PieChartData[]>
+  gradient: boolean = true
+  showLegend: boolean = false
+  showLabels: boolean = true
+  maxLabelLenght = false
 
   constructor(private olympicService: OlympicService, private router: Router) {}
 
   ngOnInit(): void {
-    this.olympics$ = this.olympicService.getOlympics();
-    this.olympics$.pipe(
-      map(data => data.map(item => new Olympic(item.id, item.country, item.participations)))
-    )
+    this.olympics$ = this.olympicService.getOlympics()
     this.joNumber$ = this.olympicService.getNumberOfJO()
-    this.pieChartData.datasets.forEach(value => {
-      value.data = this.olympicService.getPieChartData()
-    })
-    this.pieChartData.labels = this.olympicService.getCountriesList()
-    this.olympics$.subscribe(item => {
-      this.countries$ = of(this.olympicService.getCountriesList())
-    })
+    this.pieChartData$ = this.olympicService.getPieChartData()
   }
 
   public chartClicked(e: any) {
-    const index = e.active[0].index + 1
+    const index = this.olympicService.getIdByName(e.name)
     this.router.navigateByUrl("country/" + index)
   }
 }
