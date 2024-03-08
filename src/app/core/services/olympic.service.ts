@@ -45,6 +45,20 @@ export class OlympicService {
     );
   }
 
+  getNumberOfJO(): Observable<number[]> {
+    let joNumber: number[] = []
+    this.olympics$.forEach(olympics => {
+      olympics.forEach(olympic => {
+        olympic.participations.forEach(item => {
+          if (!joNumber.includes(item.year)) {
+            joNumber.push(item.year)
+          }
+        })
+      })
+    })
+    return of(joNumber)
+  }
+
   getOlympicInfo(olympic: Observable<Olympic>, info: 'medalsCount' | 'athleteCount'): Observable<number> {
     return olympic.pipe(
       map(olympic => olympic.participations.reduce(
