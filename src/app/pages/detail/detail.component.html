@@ -2,14 +2,13 @@
 
 <div class="info">
   <div class="item">Number of entries<br> <strong>{{ (olympic$ | async)?.participations?.length }}</strong></div>
-  <div class="item">Total number medals<br> <strong>{{ medalsNumber }}</strong></div>
-  <div class="item">Total number of athletes<br> <strong>{{ athletesNumber }}</strong></div>
+  <div class="item">Total number medals<br> <strong>{{ medalsNumber$ | async }}</strong></div>
+  <div class="item">Total number of athletes<br> <strong>{{ athletesNumber$ | async }}</strong></div>
 </div>
-
 
 <div class="line-chart" style="display: block">
     <canvas baseChart
-      [labels]="labels"
+      [labels]="lineChartLabels"
       [datasets]="lineChartData"
       [options]="lineChartOptions"
       [legend]="lineChartLegend"

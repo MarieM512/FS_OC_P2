@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Olympic } from '../models/Olympic';
 import { map } from 'rxjs';
@@ -45,18 +45,13 @@ export class OlympicService {
     );
   }
 
-  getOlympicInfo(olympic: Observable<Olympic>, info: "medals" | "athletes"): number {
-    let number = 0
-    olympic.forEach(item => {
-      item.participations.forEach(data => {
-        if (info === "medals") {
-          number = number + data.medalsCount
-        } else {
-          number = number + data.athleteCount
-        }
-      })
-    })
-    return number
+  getOlympicInfo(olympic: Observable<Olympic>, info: 'medalsCount' | 'athleteCount'): Observable<number> {
+    return olympic.pipe(
+      map(olympic => olympic.participations.reduce(
+          (previousValue, currentValue) => previousValue + currentValue[info], 0
+        )
+      )
+    )
   }
 
   getYearsList(olympic: Observable<Olympic>): string[] {

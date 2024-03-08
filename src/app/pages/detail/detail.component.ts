@@ -13,25 +13,24 @@ import { OlympicService } from 'src/app/core/services/olympic.service';
 })
 export class DetailComponent implements OnInit {
   olympic$!: Observable<Olympic>
-  medalsNumber!: number
-  athletesNumber!: number
-  labels!: string[]
+  medalsNumber$!: Observable<number>
+  athletesNumber$!: Observable<number>
+  lineChartLabels!: string[]
   lineChartData!: LineChartData[]
-  public lineChartType: ChartType = 'line';
-  public lineChartOptions:any = {
+  lineChartType: ChartType = 'line'
+  lineChartOptions = {
     responsive: true
-  };
-  public lineChartLegend:boolean = false;
+  }
+  lineChartLegend = false
 
   constructor(private olympicService: OlympicService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     const olympicId = +this.route.snapshot.params["id"]
     this.olympic$ = this.olympicService.getOlympicById(olympicId)
-    this.medalsNumber = this.olympicService.getOlympicInfo(this.olympic$, "medals")
-    this.athletesNumber = this.olympicService.getOlympicInfo(this.olympic$, "athletes")
-    this.labels = this.olympicService.getYearsList(this.olympic$)
+    this.medalsNumber$ = this.olympicService.getOlympicInfo(this.olympic$, "medalsCount")
+    this.athletesNumber$ = this.olympicService.getOlympicInfo(this.olympic$, "athleteCount")
+    this.lineChartLabels = this.olympicService.getYearsList(this.olympic$)
     this.lineChartData = this.olympicService.getLineChartData(this.olympic$)
   }
-
 }
