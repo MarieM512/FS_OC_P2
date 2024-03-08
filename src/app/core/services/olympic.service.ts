@@ -45,6 +45,16 @@ export class OlympicService {
     );
   }
 
+  getCountriesList(): string[] {
+    let countries: string[] = []
+    this.olympics$.forEach(olympics => {
+      olympics.forEach(olympic => {
+        countries.push(olympic.country)
+      })
+    })
+    return countries
+  }
+
   getNumberOfJO(): Observable<number[]> {
     let joNumber: number[] = []
     this.olympics$.forEach(olympics => {
@@ -93,6 +103,20 @@ export class OlympicService {
     olympic.forEach(item => {
       let lineChartData = new LineChartData(this.getMedalsList(olympic), item.country)
       list.push(lineChartData)
+    })
+    return list
+  }
+
+  getPieChartData(): number[] {
+    let list: number[] = []
+    this.olympics$.forEach(olympics => {
+      olympics.forEach(olympic => {
+        let medals = 0
+        olympic.participations.forEach(item => {
+          medals += item.medalsCount
+        })
+        list.push(medals)
+      })
     })
     return list
   }

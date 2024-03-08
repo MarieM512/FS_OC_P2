@@ -5,8 +5,6 @@
   <div class="item">Number of countries<br> <strong>{{ (olympics$ | async)?.length }}</strong></div>
 </div>
 
-
-
 <div class="pie-chart" style="display: block">
   <canvas baseChart
     [labels]="(countries$ | async) ?? []"
