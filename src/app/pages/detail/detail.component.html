@@ -5,3 +5,14 @@
   <div class="item">Total number medals<br> <strong>{{ medalsNumber }}</strong></div>
   <div class="item">Total number of athletes<br> <strong>{{ athletesNumber }}</strong></div>
 </div>
+
+
+<div class="line-chart" style="display: block">
+    <canvas baseChart
+      [labels]="labels"
+      [datasets]="lineChartData"
+      [options]="lineChartOptions"
+      [legend]="lineChartLegend"
+      [type]="lineChartType">
+    </canvas>
+  </div>

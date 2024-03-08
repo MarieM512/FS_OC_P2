@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Olympic } from '../models/Olympic';
 import { map } from 'rxjs';
+import { LineChartData } from '../models/LineChartData';
 
 @Injectable({
   providedIn: 'root',
@@ -56,5 +57,34 @@ export class OlympicService {
       })
     })
     return number
+  }
+
+  getYearsList(olympic: Observable<Olympic>): string[] {
+    let years: string[] = []
+    olympic.forEach(item => {
+      item.participations.forEach(data => {
+        years.push(String(data.year))
+      })
+    })
+    return years
+  }
+
+  getMedalsList(olympic: Observable<Olympic>): number[] {
+    let medals: number[] = []
+    olympic.forEach(item => {
+      item.participations.forEach(data => {
+        medals.push(data.medalsCount)
+      })
+    })
+    return medals
+  }
+
+  getLineChartData(olympic: Observable<Olympic>): LineChartData[] {
+    let list: LineChartData[] = []
+    olympic.forEach(item => {
+      let lineChartData = new LineChartData(this.getMedalsList(olympic), item.country)
+      list.push(lineChartData)
+    })
+    return list
   }
 }
