@@ -33,11 +33,7 @@ export class OlympicService {
 
   getOlympicById(olympicId: number): Observable<Olympic> {
     return this.olympics$.pipe(
-      map(data => {
-        return data.find(item => {
-          item.id === olympicId;
-        });
-      }),
+      map(data => data.find(item => item.id === olympicId)),
       map(data => {
         if (!data) {
           throw new Error();
@@ -46,5 +42,19 @@ export class OlympicService {
         }
       })
     );
+  }
+
+  getOlympicInfo(olympic: Observable<Olympic>, info: "medals" | "athletes"): number {
+    let number = 0
+    olympic.forEach(item => {
+      item.participations.forEach(data => {
+        if (info === "medals") {
+          number = number + data.medalsCount
+        } else {
+          number = number + data.athleteCount
+        }
+      })
+    })
+    return number
   }
 }

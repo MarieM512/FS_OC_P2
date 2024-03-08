@@ -1,1 +1,10 @@
-<p>detail works!</p>
+<h2>Olympic games app</h2>
+<hr />
+
+<div class="title">{{ (olympic$ | async)?.country }}</div>
+
+<div class="info">
+  <div class="item">Number of entries<br> <strong>{{ (olympic$ | async)?.participations?.length }}</strong></div>
+  <div class="item">Total number medals<br> <strong>{{ medalsNumber }}</strong></div>
+  <div class="item">Total number of athletes<br> <strong>{{ athletesNumber }}</strong></div>
+</div>
