@@ -27,6 +27,10 @@ export class HomeComponent implements OnInit {
     this.pieChartData$ = this.olympicService.getPieChartData()
   }
 
+  /**
+   * Change route to display information about specific country
+   * @param e 
+   */
   public chartClicked(e: any) {
     const index = this.olympicService.getIdByName(e.name)
     this.router.navigateByUrl("country/" + index)
