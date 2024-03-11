@@ -12,10 +12,7 @@
     [legend]="showLegend"
     [labels]="showLabels"
     [trimLabels]="maxLabelLenght"
-    (select)="chartClicked($event)"
-
-    
-  >
+    (select)="chartClicked($event)">
   <ng-template #tooltipTemplate let-model="model">
     <div class="tooltip">{{ model.name }}
     <br>
