@@ -4,9 +4,7 @@ import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Olympic } from '../models/Olympic';
 import { map } from 'rxjs';
-import { LineChartData } from '../models/LineChartData';
-import { PieChartData } from '../models/PieChartData';
-import { DataItem } from '@swimlane/ngx-charts';
+import { DataItem, Series } from '@swimlane/ngx-charts';
 
 @Injectable({
   providedIn: 'root',
@@ -72,20 +70,6 @@ export class OlympicService {
   }
 
   /**
-   * Get the list of country that contains the name of country
-   * @returns list of country name
-   */
-  getCountriesList(): string[] {
-    let countries: string[] = []
-    this.olympics$.forEach(olympics => {
-      olympics.forEach(olympic => {
-        countries.push(olympic.country)
-      })
-    })
-    return countries
-  }
-
-  /**
    * Get number of participations of JO by each country
    * @returns an observable of number of JO
    */
@@ -119,47 +103,18 @@ export class OlympicService {
   }
 
   /**
-   * Get list of years participations of specific country
-   * @param olympic 
-   * @returns list of years
-   */
-  getYearsList(olympic: Observable<Olympic>): string[] {
-    let years: string[] = []
-    olympic.forEach(item => {
-      item.participations.forEach(data => {
-        years.push(String(data.year))
-      })
-    })
-    return years
-  }
-
-  /**
-   * Get list of medals of specific country
-   * @param olympic 
-   * @returns list of medals
-   */
-  private getMedalsList(olympic: Observable<Olympic>): number[] {
-    let medals: number[] = []
-    olympic.forEach(item => {
-      item.participations.forEach(data => {
-        medals.push(data.medalsCount)
-      })
-    })
-    return medals
-  }
-
-  /**
    * Get data for line chart
    * @param olympic 
    * @returns list of medals by country
    */
-  getLineChartData(olympic: Observable<Olympic>): LineChartData[] {
-    let list: LineChartData[] = []
-    olympic.forEach(item => {
-      let lineChartData = new LineChartData(this.getMedalsList(olympic), item.country)
-      list.push(lineChartData)
-    })
-    return list
+  getLineChartData(olympic: Olympic): Series[] {
+    return [{
+      name: olympic.country,
+      series: olympic.participations.map(participation => ({
+        name: participation.year.toString(),
+        value: participation.medalsCount
+      }))
+    }]
   }
 
   /**

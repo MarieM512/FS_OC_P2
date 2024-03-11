@@ -7,15 +7,16 @@
   <div class="item">Total number of athletes<br> <strong>{{ athletesNumber$ | async }}</strong></div>
 </div>
 
-<div class="line-chart" style="display: block">
-    <canvas baseChart
-      [labels]="lineChartLabels"
-      [datasets]="lineChartData"
-      [options]="lineChartOptions"
-      [legend]="lineChartLegend"
-      [type]="lineChartType">
-    </canvas>
+  <div class="line-chart" style="display: block">
+    <ngx-charts-line-chart
+      [showXAxisLabel]="showXAxisLabel"
+      [xAxis]="xAxis"
+      [yAxis]="yAxis"
+      [xAxisLabel]="xAxisLabel"
+      [results]="lineChartData$ | async">
+    </ngx-charts-line-chart>
   </div>
+    
 </div>
 
 <div *ngIf="!(olympic$ | async)">

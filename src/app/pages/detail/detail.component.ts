@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ChartType } from 'chart.js';
-import { Observable } from 'rxjs';
-import { LineChartData } from 'src/app/core/models/LineChartData';
+import { Series } from '@swimlane/ngx-charts';
+import { Observable, map } from 'rxjs';
 import { Olympic } from 'src/app/core/models/Olympic';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 
@@ -15,13 +14,11 @@ export class DetailComponent implements OnInit {
   olympic$!: Observable<Olympic>
   medalsNumber$!: Observable<number>
   athletesNumber$!: Observable<number>
-  lineChartLabels!: string[]
-  lineChartData!: LineChartData[]
-  lineChartType: ChartType = 'line'
-  lineChartOptions = {
-    responsive: true
-  }
-  lineChartLegend = false
+  lineChartData$!: Observable<Series[]>
+  xAxis: boolean = true;
+  yAxis: boolean = true;
+  showXAxisLabel: boolean = true;
+  xAxisLabel: string = 'Dates';
 
   constructor(private olympicService: OlympicService, private route: ActivatedRoute) {}
 
@@ -30,7 +27,8 @@ export class DetailComponent implements OnInit {
     this.olympic$ = this.olympicService.getOlympicById(olympicId)
     this.medalsNumber$ = this.olympicService.getOlympicInfo(this.olympic$, "medalsCount")
     this.athletesNumber$ = this.olympicService.getOlympicInfo(this.olympic$, "athleteCount")
-    this.lineChartLabels = this.olympicService.getYearsList(this.olympic$)
-    this.lineChartData = this.olympicService.getLineChartData(this.olympic$)
+    this.lineChartData$ = this.olympic$.pipe(
+      map(olympic => this.olympicService.getLineChartData(olympic))
+    );
   }
 }
