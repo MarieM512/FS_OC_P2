@@ -16,6 +16,9 @@ export class OlympicService {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * Load data that permits to store olympic.json in olympics$
+   */
   loadInitialData() {
     return this.http.get<Olympic[]>(this.olympicUrl).pipe(
       tap((value) => this.olympics$.next(value)),
@@ -26,10 +29,18 @@ export class OlympicService {
     );
   }
 
+  /**
+   * Get all olympics
+   */
   getOlympics() {
     return this.olympics$.asObservable();
   }
 
+  /**
+   * Get ID of specific country by its name
+   * @param countryName 
+   * @returns number that correspond to the ID of the country
+   */
   getIdByName(countryName: string): number {
     let number: number = 0
     this.olympics$.forEach(olympics => {
@@ -41,6 +52,11 @@ export class OlympicService {
     return number
   }
 
+  /**
+   * Get specific olympic by its ID
+   * @param olympicId 
+   * @returns an observable of olympic
+   */
   getOlympicById(olympicId: number): Observable<Olympic> {
     return this.olympics$.pipe(
       map(data => data.find(item => item.id === olympicId)),
@@ -54,6 +70,10 @@ export class OlympicService {
     );
   }
 
+  /**
+   * Get the list of country that contains the name of country
+   * @returns list of country name
+   */
   getCountriesList(): string[] {
     let countries: string[] = []
     this.olympics$.forEach(olympics => {
@@ -64,6 +84,10 @@ export class OlympicService {
     return countries
   }
 
+  /**
+   * Get number of participations of JO by each country
+   * @returns an observable of number of JO
+   */
   getNumberOfJO(): Observable<number[]> {
     let joNumber: number[] = []
     this.olympics$.forEach(olympics => {
@@ -78,6 +102,12 @@ export class OlympicService {
     return of(joNumber)
   }
 
+  /**
+   * Get number of medals or athletes of specific country
+   * @param olympic 
+   * @param info 
+   * @returns an observable of number of medals or athlete
+   */
   getOlympicInfo(olympic: Observable<Olympic>, info: 'medalsCount' | 'athleteCount'): Observable<number> {
     return olympic.pipe(
       map(olympic => olympic.participations.reduce(
@@ -87,6 +117,11 @@ export class OlympicService {
     )
   }
 
+  /**
+   * Get list of years participations of specific country
+   * @param olympic 
+   * @returns list of years
+   */
   getYearsList(olympic: Observable<Olympic>): string[] {
     let years: string[] = []
     olympic.forEach(item => {
@@ -97,6 +132,11 @@ export class OlympicService {
     return years
   }
 
+  /**
+   * Get list of medals of specific country
+   * @param olympic 
+   * @returns list of medals
+   */
   private getMedalsList(olympic: Observable<Olympic>): number[] {
     let medals: number[] = []
     olympic.forEach(item => {
@@ -107,6 +147,11 @@ export class OlympicService {
     return medals
   }
 
+  /**
+   * Get data for line chart
+   * @param olympic 
+   * @returns list of medals by country
+   */
   getLineChartData(olympic: Observable<Olympic>): LineChartData[] {
     let list: LineChartData[] = []
     olympic.forEach(item => {
@@ -116,6 +161,10 @@ export class OlympicService {
     return list
   }
 
+  /**
+   * Get data for pie chart
+   * @returns list of participations by country
+   */
   getPieChartData(): Observable<PieChartData[]> {
     return this.olympics$.pipe(
       map(olympics => 
