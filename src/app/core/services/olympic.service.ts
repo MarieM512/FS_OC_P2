@@ -6,6 +6,7 @@ import { Olympic } from '../models/Olympic';
 import { map } from 'rxjs';
 import { LineChartData } from '../models/LineChartData';
 import { PieChartData } from '../models/PieChartData';
+import { DataItem } from '@swimlane/ngx-charts';
 
 @Injectable({
   providedIn: 'root',
@@ -165,7 +166,7 @@ export class OlympicService {
    * Get data for pie chart
    * @returns list of participations by country
    */
-  getPieChartData(): Observable<PieChartData[]> {
+  getPieChartData(): Observable<DataItem[]> {
     return this.olympics$.pipe(
       map(olympics => 
         olympics.map(olympic => {
